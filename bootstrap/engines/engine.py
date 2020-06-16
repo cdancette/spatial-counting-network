@@ -507,7 +507,12 @@ class Engine(object):
                 name: name of the checkpoint
                 model: model associated to the checkpoint
                 optimizer: optimizer associated to the checkpoint
+
+            Note: If model checkpoint exists, we will always load it.
+            Then, we check if both optimizer and engine are saved.
+            If both are saved, then we load them both. Else, we load none.
         """
+
         path_template = os.path.join(dir_logs, "ckpt_{}_{}.pth.tar")
         path_model = path_template.format(name, "model")
         path_optimizer = path_template.format(name, "optimizer")
@@ -549,7 +554,6 @@ class Engine(object):
             path_engine, map_location=map_location
         )
         self.load_state_dict(engine_state)
-
         return True
 
     def save(self, dir_logs, name, model, optimizer):
