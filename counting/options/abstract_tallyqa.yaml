@@ -1,0 +1,53 @@
+view:
+  name: plotly
+  items:
+    # loss
+  - logs:train_epoch.loss+logs:eval_epoch.loss+logs:validation_epoch.loss
+  - logs:train_epoch.loss+logs:train_epoch.original_loss+logs:train_epoch.entropy_loss+logs:train_epoch.l1_regul
+  - logs:eval_epoch.loss+logs:eval_epoch.original_loss+logs:eval_epoch.entropy_loss+logs:eval_epoch.l1_regul
+  - logs:validation_epoch.loss+logs:validation_epoch.original_loss+logs:validation_epoch.entropy_loss+logs:validation_epoch.l1_regul
+
+    # accs
+  - logs:train_epoch.accuracy_top1+logs:eval_epoch.accuracy_top1+logs:validation_epoch.accuracy_top1
+
+    # tallyqa accs
+  - logs:train_epoch.tally_acc.overall+logs:eval_epoch.tally_acc.overall+logs:validation_epoch.accuracy_top1
+  - logs:eval_epoch.tally_acc.simple+logs:eval_epoch.tally_acc.complex
+
+    # m-rel accs
+  - logs:train_epoch.tally_acc.m-rel.overall+logs:eval_epoch.tally_acc.m-rel.overall+logs:validation_epoch.tally_acc.m-rel.overall
+  - logs:eval_epoch.tally_acc.m-rel.simple+logs:eval_epoch.tally_acc.m-rel.complex
+  
+  # normalized harmonic mean
+  - logs:train_epoch.tally_acc.norm_harmonic.overall+logs:eval_epoch.tally_acc.norm_harmonic.overall+logs:validation_epoch.tally_acc.norm_harmonic.overall
+  - logs:eval_epoch.tally_acc.norm_harmonic.simple+logs:eval_epoch.tally_acc.norm_harmonic.complex
+
+  # rmse
+  - logs:train_epoch.tally_rmse.overall+logs:eval_epoch.tally_rmse.overall
+  - logs:eval_epoch.tally_rmse.simple+logs:eval_epoch.tally_rmse.complex
+
+
+    # m-rel rmse
+  - logs:train_epoch.tally_rmse.m-rel.overall+logs:eval_epoch.tally_rmse.m-rel.overall+logs:validation_epoch.tally_rmse.m-rel.overall
+  - logs:eval_epoch.tally_rmse.m-rel.simple+logs:eval_epoch.tally_rmse.m-rel.complex
+    # validation
+
+
+  # normalized harmonic rmse
+  - logs:train_epoch.tally_rmse.norm_harmonic.overall+logs:eval_epoch.tally_rmse.norm_harmonic.overall+logs:validation_epoch.tally_rmse.norm_harmonic.overall
+  - logs:eval_epoch.tally_rmse.norm_harmonic.simple+logs:eval_epoch.tally_rmse.norm_harmonic.complex
+
+  # L1, L2
+  - logs:train_epoch.tally_l1.overall+logs:eval_epoch.tally_l1.overall
+  - logs:eval_epoch.tally_l1.simple+logs:eval_epoch.tally_l1.complex
+  - logs:train_epoch.tally_l2.overall+logs:eval_epoch.tally_l2.overall
+  - logs:eval_epoch.tally_l2.simple+logs:eval_epoch.tally_l2.complex
+  # temperature
+  - logs:sharpen-temperature
+
+
+# entropy
+  - logs:train_epoch.entropy_loss+logs:train_epoch.entropy_loss.attention+logs:train_epoch.entropy_loss.attention_pairwise+logs:train_epoch.entropy_loss.scores
+  - logs:eval_epoch.entropy_loss+logs:eval_epoch.entropy_loss.attention+logs:eval_epoch.entropy_loss.attention_pairwise+logs:eval_epoch.entropy_loss.scores
+  - logs:validation_epoch.entropy_loss+logs:validation_epoch.entropy_loss.attention+logs:validation_epoch.entropy_loss.attention_pairwise+logs:validation_epoch.entropy_loss.scores
+  - logs:eval_epoch.entropy_weight

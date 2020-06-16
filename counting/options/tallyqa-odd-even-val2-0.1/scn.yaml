@@ -1,0 +1,90 @@
+__include__: ../abstract_tallyqa.yaml
+exp:
+  dir: logs/tallyqa-odd-even-val2-0.1/scn
+  resume: # last, best_[...], or empty (from scratch)
+  resume_or_start:
+dataset:
+  name: counting.datasets.tallyqa.TallyQAOddEven2
+  params:
+    dir_data: data/vqa/tallyqa/
+    dir_coco: data/vqa/coco/extract_rcnn/2018-04-27_bottom-up-attention_fixed_36  # TODO use 100 bbox ?
+    dir_vg: data/vqa/vgenome/extract_rcnn/2018-04-27_bottom-up-attention_fixed_36 # TODO use 100 bbox ?
+    image_features: "default"
+    background_coco: data/vqa/coco/extract/fbresnet152.zip
+    background_vg: data/vqa/vgenome/extract/fbresnet152.zip
+    sampling:
+    background_merge: 2
+    background: false
+    proportion_opposite: 0.1
+    val_size: 0.1
+  train_split: 'train-noval'
+  validation_split: 'val'
+  eval_split: 'test'
+  nb_threads: 4
+  batch_size: 64
+model:
+  name: default
+  network:
+    import: counting.models.networks.factory
+    name: scn.SCN
+    parameters:
+      txt_enc:
+        name: skipthoughts
+        type: BayesianUniSkip
+        dropout: 0.25
+        fixed_emb: True
+        dir_st: data/skip-thoughts
+      add_coords: true
+      fusion_vision: true
+      num_heads_self_att: 1
+      hidden_dim: 1500
+      intermediate_dim_self_att: 500
+      fusion_mm_dim: 768
+      residual_fusion: false
+      fusion_activ:
+      output: fusion-regression
+      output_on: final
+      output_params:
+        layers: 2
+        hidden_dim: 1500
+        intermediate_dim: 768
+        max_ans: 15
+        sigmoid: true
+  criterion:
+    import: counting.models.criterions.factory
+    name: counting-regression  # for counting
+    loss: mse
+    entropy_loss_weight: 1.0
+  metric:
+    import: counting.models.metrics.factory
+    name: tallyqa_metrics
+optimizer:
+  import: counting.optimizers.factory
+  name: Adam
+  weight_decay: 0.0
+  lr: 2.e-5
+  gradual_warmup_steps: [0.5, 2.0, 7.0] #torch.linspace
+  lr_decay_epochs: [14, 24, 2] #range
+  lr_decay_rate: .25
+engine:
+  import: counting.engines.val_engine
+  name:
+  debug: False
+  print_freq: 10
+  nb_epochs: 30
+  saving_criteria:
+  - eval_epoch.accuracy_top1:max
+  - validation_epoch.tally_acc.m-rel.overall:max
+  - validation_epoch.tally_acc.overall:max
+  - eval_epoch.tally_acc.m-rel.overall:max
+misc:
+  logs_name:
+  cuda: True
+  seed: 1337
+  
+gridsearch:
+  params:
+    - name: "optimizer.lr"
+      values: [1.e-4, 7.e-5, 5.e-5, 2.e-5, 1.e-5, 7.e-6, 5.e-6, 2.e-6, 1.e-6]
+    - name: "model.criterion.entropy_loss_weight"
+      values: [0.1, 0.2, 0.5, 0.7, 1.0, 2.0]
