@@ -1,6 +1,6 @@
 # Overcoming statistical shortcuts for open-ended visual counting
 
-Code for the paper https://arxiv.org/abs/xxx
+Code and datasets for the paper https://arxiv.org/abs/2006.10079
 
 
 ## Requirements
