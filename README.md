@@ -2,6 +2,9 @@
 
 Code and datasets for the paper https://arxiv.org/abs/2006.10079
 
+<p align="center">
+    <img src="https://i.imgur.com/EDF5Izv.png"/>    
+</p>
 
 ## Requirements
 
